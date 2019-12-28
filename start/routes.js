@@ -17,6 +17,7 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
+Route.get('/admin', 'App/Controllers/AdminController.index')
 Route.get('/getUsers', 'App/Controllers/Ws/UserController.get').middleware('auth:jwt')
 Route.post('/createUsers', 'App/Controllers/Ws/UserController.create')
 Route.post('/loginUser', 'App/Controllers/Ws/UserController.login')
