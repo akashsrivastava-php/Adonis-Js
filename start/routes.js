@@ -18,7 +18,11 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 Route.get('/login', 'App/Controllers/AdminController.index')
-Route.get('/admin', 'App/Controllers/AdminController.dash')
+Route.post('/loginDash', 'App/Controllers/AdminController.login')
+Route.get('/logout', 'App/Controllers/AdminController.logout')
 Route.get('/getUsers', 'App/Controllers/Ws/UserController.get').middleware('auth:jwt', 'role:Admin')
 Route.post('/createUsers', 'App/Controllers/Ws/UserController.create')
 Route.post('/loginUser', 'App/Controllers/Ws/UserController.login')
+Route.group(() => {
+  Route.get('/dash', 'App/Controllers/AdminController.dash')
+}).middleware('role:Admin')

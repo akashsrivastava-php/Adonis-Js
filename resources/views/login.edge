@@ -36,12 +36,16 @@
         <div class="card ">
             <div class="card-header text-center"><a href="../index.html"><img class="logo-img" src="assets/images/logo.png" alt="logo"></a><span class="splash-description">Please enter your user information.</span></div>
             <div class="card-body">
-                <form>
+              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('notification'), hasErrorFor('notification')) }}
+                <form action='/loginDash' method='post'>
+                  {{ csrfField() }}
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="username" type="text" placeholder="Username" autocomplete="off">
+                        <input name="username" class="form-control form-control-lg" id="username" type="text" placeholder="Username" autocomplete="off">
+                        {{ elIf('<span class="text-danger">$self</span>', getErrorFor('username'), hasErrorFor('username')) }}
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="password" type="password" placeholder="Password">
+                        <input name="password" class="form-control form-control-lg" id="password" type="password" placeholder="Password">
+                        {{ elIf('<span class="text-danger">$self</span>', getErrorFor('password'), hasErrorFor('password')) }}
                     </div>
                     <div class="form-group">
                         <label class="custom-control custom-checkbox">
