@@ -1,0 +1,60 @@
+@layout('master')
+@section('sidebar')
+  @include('sidebar')
+@endsection
+@section('content')
+  <div class="dashboard-wrapper">
+    <div class="container-fluid  dashboard-content">
+      <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="page-header">
+                  <h2 class="pageheader-title">Add User </h2>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="card">
+              <div class="card-body">
+                  <form method="post" action="/add-users">
+                    {{ csrfField() }}
+                      <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                              <label for="name">Name</label>
+                              <input name="name" id="name" type="text" class="form-control" placeholder="Name">
+                              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('name'), hasErrorFor('name')) }}
+                          </div>
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                            <label for="email">Email</label>
+                            <input name="email" id="email" type="text" class="form-control" placeholder="Email">
+                            {{ elIf('<span class="text-danger">$self</span>', getErrorFor('email'), hasErrorFor('email')) }}
+                          </div>
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                            <label for="password">Password</label>
+                            <input name="password" type="password" class="form-control" placeholder="Password">
+                            {{ elIf('<span class="text-danger">$self</span>', getErrorFor('password'), hasErrorFor('password')) }}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label for="input-select">Role</label>
+                          <select name="role" class="form-control" id="input-select">
+                            @each(role in data)
+                              <option value={{ role.id }}>{{ role.name }}</option>
+                            @endeach
+                          </select>
+                          {{ elIf('<span class="text-danger">$self</span>', getErrorFor('role'), hasErrorFor('role')) }}
+                      </div>
+                      <div class="form-row mt-3">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                              <button class="btn btn-primary" type="submit">Submit form</button>
+                              <button class="btn btn-secondary">Cancel</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection
