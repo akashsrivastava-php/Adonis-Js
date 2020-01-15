@@ -13,10 +13,16 @@ class UserController {
    .query()
    .with('role')
    .where(function () {
-     this
-     .where('role_id', '!=', 1)
-     .where('id', '!=', auth.user.id)
-     .where(query.search, 'LIKE', '%'+query.keyword+'%')
+     if(query.search){
+      this
+      .where('role_id', '!=', 1)
+      .where('id', '!=', auth.user.id)
+      .where(query.search, 'LIKE', '%'+query.keyword+'%')
+     }else{
+      this
+      .where('role_id', '!=', 1)
+      .where('id', '!=', auth.user.id)
+     }
   }).paginate(page,10)
     return view.render('user/list', {data: data.toJSON()})
   }

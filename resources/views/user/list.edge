@@ -20,16 +20,18 @@
                         <form class="form-inline">
                           <div class="form-group">
                           <select name="search" class="form-control mr-3" id="input-select">
-                              <option value="username">Name</option>
-                              <option value="email">Email</option>
+                              <option {{ request.get().search == 'username' ? 'selected' : '' }} value="username">Name</option>
+                              <option {{ request.get().search == 'email' ? 'selected' : '' }} value="email">Email</option>
                             </select>
                           </div>
                           <div class="form-group mr-3">
-                            <input name="keyword" id="keyword" type="text" class="form-control" placeholder="Search">
+                          <input name="keyword" value="{{ request.get().keyword ? request.get().keyword : '' }}" id="keyword" type="text" class="form-control" placeholder="Search">
                           </div>
                           <div>
                             <button class="btn btn-primary btn-sm" type="submit">Search</button>
+                          <a class="btn btn-secondary btn-sm" href="{{url}}">Clear</a>
                           </div>
+                        </form>
                       </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">
