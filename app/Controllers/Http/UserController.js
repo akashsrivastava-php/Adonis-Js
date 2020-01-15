@@ -6,7 +6,9 @@ const { validate } = use('Validator')
 
 class UserController {
 
-  async listUsers({view, auth, response}){
+  async listUsers({view, auth, response, params, request}){
+    const query = request.get()
+   const page = params.page ? params.page : 1
    const data = await User
    .query()
    .with('role')
@@ -14,7 +16,8 @@ class UserController {
      this
      .where('role_id', '!=', 1)
      .where('id', '!=', auth.user.id)
-  }).paginate(1,10)
+     .where(query.search, 'LIKE', '%'+query.keyword+'%')
+  }).paginate(page,10)
     return view.render('user/list', {data: data.toJSON()})
   }
 
