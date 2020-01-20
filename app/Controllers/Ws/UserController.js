@@ -43,7 +43,7 @@ class UserController {
         }
       }
       catch (e) {
-        return response.json({message: 'You first need to register!'})
+        return response.json({error: { message: 'Invalid Email or Password!'}})
       }
     }
   }
