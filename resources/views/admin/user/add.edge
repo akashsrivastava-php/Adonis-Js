@@ -1,6 +1,6 @@
-@layout('master')
+@layout('admin/master')
 @section('sidebar')
-  @include('sidebar')
+  @include('admin/sidebar')
 @endsection
 @section('content')
   <div class="dashboard-wrapper">
@@ -16,7 +16,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="card">
               <div class="card-body">
-                  <form method="post" action="/insert-users">
+                  <form method="post" action="/admin/insert-users">
                     {{ csrfField() }}
                       <div class="row">
                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -47,7 +47,7 @@
                       <div class="form-row mt-3">
                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
                               <button class="btn btn-primary" type="submit">Add User</button>
-                              <a class="btn btn-secondary" href="/list-users">Cancel</a>
+                              <a class="btn btn-secondary" href="/admin/list-users">Cancel</a>
                           </div>
                       </div>
                   </form>

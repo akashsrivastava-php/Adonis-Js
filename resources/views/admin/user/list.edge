@@ -1,6 +1,6 @@
-@layout('master')
+@layout('admin/master')
 @section('sidebar')
-  @include('sidebar')
+  @include('admin/sidebar')
 @endsection
 @section('content')
   <div class="dashboard-wrapper">
@@ -56,9 +56,9 @@
                                       {{user.role.name}}
                                     </td>
                                     <td>
-                                      <a href="/edit-users/{{user.id}}"><i class="fas fa-edit"></i></a>
+                                      <a href="/admin/edit-users/{{user.id}}"><i class="fas fa-edit"></i></a>
                                       &nbsp;
-                                      <a href="/delete-users/{{user.id}}"><i class="fas fa-trash"></i></a>
+                                      <a href="/admin/delete-users/{{user.id}}"><i class="fas fa-trash"></i></a>
                                     </td>
                                   </tr>
                                   @endeach
@@ -70,13 +70,13 @@
                       <nav aria-label="Page navigation example">
                         <ul class="pagination float-right pr-3">
                           <li class="page-item {{data.page == 1 ? 'disabled' : ''}}">
-                            <a class="page-link" href="/list-users/{{ data.page-1 }}" aria-label="Previous">
+                            <a class="page-link" href="/admin/list-users/{{ data.page-1 }}" aria-label="Previous">
                               <span aria-hidden="true">&laquo;</span>
                               <span class="sr-only">Previous</span>
                             </a>
                           </li>
                           <li class="page-item {{ data.lastPage == data.page ? 'disabled' : '' }}">
-                            <a class="page-link" href="/list-users/{{ data.page+1 }}" aria-label="Next">
+                            <a class="page-link" href="/admin/list-users/{{ data.page+1 }}" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
                               <span class="sr-only">Next</span>
                             </a>

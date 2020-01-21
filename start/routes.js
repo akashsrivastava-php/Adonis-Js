@@ -17,20 +17,26 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
-Route.get('/login', 'App/Controllers/Http/AdminController.index')
-Route.post('/loginDash', 'App/Controllers/Http/AdminController.login')
-Route.get('/logout', 'App/Controllers/Http/AdminController.logout')
+
+
 Route.group(() => {
   Route.get('/getUsers', 'App/Controllers/Ws/UserController.get').middleware('auth:jwt', 'role:Admin')
   Route.post('/createUsers', 'App/Controllers/Ws/UserController.create')
   Route.post('/loginUser', 'App/Controllers/Ws/UserController.login')
 }).prefix('api')
+
 Route.group(() => {
-  Route.get('/dash', 'App/Controllers/Http/AdminController.dash')
-  Route.get('/list-users/:page?', 'App/Controllers/Http/UserController.listUsers')
-  Route.get('/add-users', 'App/Controllers/Http/UserController.addUsersForm')
-  Route.post('/insert-users', 'App/Controllers/Http/UserController.addUsers')
-  Route.get('/edit-users/:id', 'App/Controllers/Http/UserController.editUser')
-  Route.post('/update-users/:id', 'App/Controllers/Http/UserController.updateUser')
-  Route.get('/delete-users/:id', 'App/Controllers/Http/UserController.deleteUser')
-}).middleware('role:Admin')
+  Route.get('/login', 'App/Controllers/Http/Admin/AdminController.index')
+  Route.post('/loginDash', 'App/Controllers/Http/Admin/AdminController.login')
+  Route.get('/logout', 'App/Controllers/Http/Admin/AdminController.logout')
+}).prefix('admin')
+
+Route.group(() => {
+  Route.get('/dash', 'App/Controllers/Http/Admin/AdminController.dash')
+  Route.get('/list-users/:page?', 'App/Controllers/Http/Admin/UserController.listUsers')
+  Route.get('/add-users', 'App/Controllers/Http/Admin/UserController.addUsersForm')
+  Route.post('/insert-users', 'App/Controllers/Http/Admin/UserController.addUsers')
+  Route.get('/edit-users/:id', 'App/Controllers/Http/Admin/UserController.editUser')
+  Route.post('/update-users/:id', 'App/Controllers/Http/Admin/UserController.updateUser')
+  Route.get('/delete-users/:id', 'App/Controllers/Http/Admin/UserController.deleteUser')
+}).prefix('admin').middleware('role:Admin')

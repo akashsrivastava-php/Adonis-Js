@@ -24,12 +24,12 @@ class UserController {
       .where('id', '!=', auth.user.id)
      }
   }).paginate(page,10)
-    return view.render('user/list', {data: data.toJSON()})
+    return view.render('admin/user/list', {data: data.toJSON()})
   }
 
   async addUsersForm({view, response}){
     const data = await Role.all()
-    return view.render('user/add', {data: data.toJSON()})
+    return view.render('admin/user/add', {data: data.toJSON()})
   }
 
   async addUsers({request, response, session}){
@@ -50,14 +50,14 @@ class UserController {
       user.password = password
       user.role_id = role ? role : 3
       await user.save()
-      return response.redirect('/list-users')
+      return response.redirect('/admin/list-users')
     }
   }
 
   async editUser({params,view}){
     const user = await User.find(params.id)
     const role = await Role.all()
-    return view.render('user/edit', {user: user.toJSON(), role: role.toJSON()})
+    return view.render('admin/user/edit', {user: user.toJSON(), role: role.toJSON()})
   }
 
   async updateUser({params,response,session,request}){
@@ -80,7 +80,7 @@ class UserController {
         user.password = password
       }
       await user.save()
-      return response.redirect('/list-users')
+      return response.redirect('/admin/list-users')
     }
   }
 
@@ -88,7 +88,7 @@ class UserController {
     const { id } = params
     const user = await User.find(id)
     await user.delete()
-    return response.redirect('/list-users')
+    return response.redirect('/admin/list-users')
   }
 
 }

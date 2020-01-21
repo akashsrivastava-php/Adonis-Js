@@ -4,14 +4,14 @@ class AdminController {
 
   async index({view, auth, response}){
     if(auth.user){
-      response.redirect('/dash')
+      response.redirect('dash')
     }else{
-      return view.render('login')
+      return view.render('admin/login')
     }
   }
 
   async dash({view}){
-    return view.render('adminDash')
+    return view.render('admin/adminDash')
   }
 
   async login({request, auth, response, session}){
@@ -30,7 +30,7 @@ class AdminController {
     }else{
       try{
         await auth.attempt(username, password)
-        return response.redirect('/dash')
+        return response.redirect('dash')
       }
       catch(e){
         session.withErrors({ notification: 'Invalid username or password!' })
@@ -42,7 +42,7 @@ class AdminController {
 
   async logout ({auth, response}){
     await auth.logout()
-    response.redirect('/login')
+    response.redirect('login')
   }
 
 }

@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Login</title>
     <!-- Bootstrap CSS -->
-      {{ style('assets/vendor/bootstrap/css/bootstrap.min') }}
-      {{ style('assets/vendor/fonts/circular-std/style') }}
-      {{ style('assets/libs/css/style') }}
-      {{ style('assets/vendor/fonts/fontawesome/css/fontawesome-all') }}
+      {{ style('admin/assets/vendor/bootstrap/css/bootstrap.min') }}
+      {{ style('admin/assets/vendor/fonts/circular-std/style') }}
+      {{ style('admin/assets/libs/css/style') }}
+      {{ style('admin/assets/vendor/fonts/fontawesome/css/fontawesome-all') }}
     <style>
     html,
     body {
@@ -37,7 +37,7 @@
             <div class="card-header text-center"><a href="../index.html"><img class="logo-img" src="assets/images/logo.png" alt="logo"></a><span class="splash-description">Please enter your user information.</span></div>
             <div class="card-body">
               {{ elIf('<span class="text-danger">$self</span>', getErrorFor('notification'), hasErrorFor('notification')) }}
-                <form action='/loginDash' method='post'>
+                <form action='/admin/loginDash' method='post'>
                   {{ csrfField() }}
                     <div class="form-group">
                         <input name="username" class="form-control form-control-lg" id="username" type="text" placeholder="Username" autocomplete="off">
@@ -69,8 +69,8 @@
     <!-- end login page  -->
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
-    {{script('assets/vendor/jquery/jquery-3.3.1.min')}}
-    {{script('assets/vendor/bootstrap/js/bootstrap.bundle')}}
+    {{script('admin/assets/vendor/jquery/jquery-3.3.1.min')}}
+    {{script('admin/assets/vendor/bootstrap/js/bootstrap.bundle')}}
 </body>
 
 </html>
