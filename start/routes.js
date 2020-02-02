@@ -18,7 +18,12 @@ const Route = use('Route')
 
 Route.on('/').render('front/home')
 Route.on('/login').render('front/login')
-Route.on('/posts').render('front/posts')
+
+Route.group(() => {
+  Route.on('/posts').render('front/posts')
+}).middleware('role:User')
+
+Route.post('/login-action', 'App/Controllers/Http/Front/UserController.login')
 
 Route.group(() => {
   Route.get('/getUsers', 'App/Controllers/Ws/UserController.get').middleware('auth:jwt', 'role:Admin')

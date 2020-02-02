@@ -6,7 +6,8 @@
     <div class="container">
       <div class="col-md-4 ml-auto mr-auto">
         <div class="card card-login card-plain">
-          <form class="form" method="" action="">
+          <form class="form" method="post" action="/login-action">
+            {{ csrfField() }}
             <div class="card-header text-center">
               <div class="logo-container">
                 <img src="front/assets/img/now-logo.png" alt="">
@@ -19,19 +20,20 @@
                     <i class="now-ui-icons users_circle-08"></i>
                   </span>
                 </div>
-                <input type="text" class="form-control" placeholder="First Name...">
+                <input type="text" name="username" class="form-control" placeholder="Enter Email..." autocomplete="off">
               </div>
               <div class="input-group no-border input-lg">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
-                    <i class="now-ui-icons text_caps-small"></i>
+                    <i class="now-ui-icons ui-1_lock-circle-open"></i>
                   </span>
                 </div>
-                <input type="text" placeholder="Last Name..." class="form-control" />
+                <input type="password" name="password" placeholder="Enter Password..." class="form-control" />
               </div>
             </div>
+            {{ elIf('<span class="text-danger">$self</span>', getErrorFor('notification'), hasErrorFor('notification')) }}
             <div class="card-footer text-center">
-              <a href="#pablo" class="btn btn-primary btn-round btn-lg btn-block">Get Started</a>
+              <button class="btn btn-primary btn-round btn-lg btn-block">Get Started</button>
               <div class="pull-left">
                 <h6>
                   <a href="#pablo" class="link">Create Account</a>

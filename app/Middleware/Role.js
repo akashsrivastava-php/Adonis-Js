@@ -12,14 +12,23 @@ class Role {
   async handle ({ auth, response }, next, properties) {
     // call next to advance the request
     if(Object.is(auth.user, null)){
-      response.redirect('/admin/login')
+      if(properties.indexOf('Admin') !== -1){
+        response.redirect('/admin/login')
+      }else{
+        response.redirect('/login')
+      }
     }else{
       const user = await User.find(auth.user.id)
       const roledata = await user.role().fetch()
       if(properties.indexOf(roledata.name) !== -1){
         await next()
       }else{
-        response.redirect('/admin/login')
+        auth.logout()
+        if(properties.indexOf('Admin') !== -1){
+          response.redirect('/admin/login')
+        }else{
+          response.redirect('/login')
+        }
       }
     }
   }
