@@ -32,6 +32,7 @@ Route.group(() => {
 }).prefix('api')
 
 Route.group(() => {
+  Route.get('/', 'App/Controllers/Http/Admin/AdminController.index')
   Route.get('/login', 'App/Controllers/Http/Admin/AdminController.index')
   Route.post('/loginDash', 'App/Controllers/Http/Admin/AdminController.login')
   Route.get('/logout', 'App/Controllers/Http/Admin/AdminController.logout')
@@ -45,4 +46,11 @@ Route.group(() => {
   Route.get('/edit-users/:id', 'App/Controllers/Http/Admin/UserController.editUser')
   Route.post('/update-users/:id', 'App/Controllers/Http/Admin/UserController.updateUser')
   Route.get('/delete-users/:id', 'App/Controllers/Http/Admin/UserController.deleteUser')
+  Route.get('/list-examtypes/:page?', 'App/Controllers/Http/Admin/ExamController.listExamTypes')
+  Route.get('/add-examtypes', 'App/Controllers/Http/Admin/ExamController.addExamTypeForm')
+  Route.post('/insert-examtypes', 'App/Controllers/Http/Admin/ExamController.addExamType')
+  Route.get('/edit-examtypes/:id', 'App/Controllers/Http/Admin/ExamController.editExamType')
+  Route.post('/update-examtypes/:id', 'App/Controllers/Http/Admin/ExamController.updateExamType')
+  Route.get('/delete-examtypes/:id', 'App/Controllers/Http/Admin/ExamController.deleteExamType')
+  
 }).prefix('admin').middleware('role:Admin')
