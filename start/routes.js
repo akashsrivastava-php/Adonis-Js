@@ -52,5 +52,11 @@ Route.group(() => {
   Route.get('/edit-examtypes/:id', 'App/Controllers/Http/Admin/ExamController.editExamType')
   Route.post('/update-examtypes/:id', 'App/Controllers/Http/Admin/ExamController.updateExamType')
   Route.get('/delete-examtypes/:id', 'App/Controllers/Http/Admin/ExamController.deleteExamType')
+  Route.get('/list-exams/:page?', 'App/Controllers/Http/Admin/ExamController.listExams')
+  Route.get('/add-exams', 'App/Controllers/Http/Admin/ExamController.addExam')
+  Route.post('/insert-exams', 'App/Controllers/Http/Admin/ExamController.insertExam')
+  Route.get('/edit-exams/:id', 'App/Controllers/Http/Admin/ExamController.editExam')
+  Route.post('/update-exams/:id', 'App/Controllers/Http/Admin/ExamController.updateExam')
+  Route.get('/delete-exams/:id', 'App/Controllers/Http/Admin/ExamController.deleteExam')
   
 }).prefix('admin').middleware('role:Admin')

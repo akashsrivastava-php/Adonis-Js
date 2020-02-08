@@ -8,7 +8,7 @@
       <div class="row">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div class="page-header">
-                  <h2 class="pageheader-title">Add Exam Type </h2>
+                  <h2 class="pageheader-title">Add Exam </h2>
               </div>
           </div>
       </div>
@@ -16,8 +16,17 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="card">
               <div class="card-body">
-                  <form method="post" action="/admin/insert-examtypes">
+                  <form method="post" action="/admin/insert-exams">
                     {{ csrfField() }}
+                    <div class="form-group">
+                      <label for="input-select">Exam Type</label>
+                      <select name="examtype" class="form-control" id="input-select">
+                        @each(type in data)
+                          <option value={{ type.id }}>{{ type.name }}</option>
+                        @endeach
+                      </select>
+                      {{ elIf('<span class="text-danger">$self</span>', getErrorFor('examtype'), hasErrorFor('examtype')) }}
+                  </div>
                       <div class="row">
                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                               <label for="name">Name</label>
@@ -27,8 +36,8 @@
                       </div>
                       <div class="form-row mt-3">
                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
-                              <button class="btn btn-primary" type="submit">Add Exam Type</button>
-                              <a class="btn btn-secondary" href="/admin/list-examtypes">Cancel</a>
+                              <button class="btn btn-primary" type="submit">Add Exam</button>
+                              <a class="btn btn-secondary" href="/admin/list-exams">Cancel</a>
                           </div>
                       </div>
                   </form>
