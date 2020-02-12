@@ -1,0 +1,67 @@
+@layout('front/master')
+@section('content')
+<style>
+  .wrapper{
+    margin-top: 30px;
+  }
+  .navbar.navbar-transparent {
+    background-color: #2ca8ff !important
+  }
+  .accordion{
+    margin-bottom: -23px;
+  }
+</style>
+<div class="wrapper">
+    <!-- End .section-navbars  -->
+    <div class="section section-tabs">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 ml-auto col-lg-7 mr-auto">
+            <div class="accordion" id="accordionExample">
+              <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h3 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Exam Type
+                    </button>
+                  </h3>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                  <div class="">
+                    <ul class="list-group">
+                      <li class="list-group-item">Cras justo odio <i class="now-ui-icons ui-1_check float-right"></i></li>
+                      <li class="list-group-item">Dapibus ac facilisis in</li>
+                      <li class="list-group-item">Morbi leo risus</li>
+                      <li class="list-group-item">Porta ac consectetur ac</li>
+                      <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="accordion" id="accordionExample1">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h3 class="mb-0">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne">
+                    Exam Type
+                  </button>
+                </h3>
+              </div>
+              <div id="collapseOne1" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample1">
+                <div class="">
+                  <ul class="list-group">
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  @endsection

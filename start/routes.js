@@ -21,6 +21,7 @@ Route.on('/login').render('front/login')
 
 Route.group(() => {
   Route.on('/posts').render('front/posts')
+  Route.on('/setting').render('front/setting')
 }).middleware('role:User')
 
 Route.post('/login-action', 'App/Controllers/Http/Front/UserController.login')
