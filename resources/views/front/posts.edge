@@ -1,41 +1,10 @@
 @layout('front/master')
 @section('content')
-<style>
-  .wrapper{
-    margin-top: 30px;
-  }
-  .navbar.navbar-transparent {
-    background-color: #2ca8ff !important
-  }
-  .comment{
-    margin: 20px 0px 0px 0px;
-  }
-  .comment-box{
-    margin-top: 30px;
-  }
-  .post-head{
-    margin-bottom: 20px;
-  }
-  [data-letters]:before {
-  content:attr(data-letters);
-  display:inline-block;
-  font-size:1em;
-  width:2.5em;
-  height:2.5em;
-  line-height:2.5em;
-  text-align:center;
-  border-radius:50%;
-  background:plum;
-  vertical-align:middle;
-  margin-right:1em;
-  color:white;
-  }
-</style>
 <div class="wrapper">
     <!-- End .section-navbars  -->
     <div class="section section-tabs">
       <div class="container">
-        <div class="row">
+        <div class="row post-list">
           <div class="col-md-12 ml-auto col-lg-7 mr-auto">
             <!-- Nav tabs -->
             <div class="card">
@@ -45,23 +14,25 @@
                   <div class="media">
                     <div class="media-body overflow-hidden">
                         <div class="d-flex align-items-center mb-1">
-                            <h6 data-letters="AS" class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
+                            <h6 data-letters={{auth.user.username.charAt(0)}} class="text-truncate mb-0 mr-auto">{{auth.user.username}}</h6>
                         </div>
                     </div>
                 </div>
-                  <form>
+                  <form action="/post/add" method="post" enctype="multipart/form-data">
+                    {{ csrfField() }}
                    <div class="form-inline comment">
                       <div class="col-8 col-lg-8 form-group">
-                        <textarea name="doubttxt" rows="2" class="form-control w-100" placeholder="Ask a doubt..."></textarea>
+                        <textarea name="post" rows="2" class="form-control w-100" placeholder="Ask a doubt..."></textarea>
+                        {{ elIf('<span class="text-danger">$self</span>', getErrorFor('post'), hasErrorFor('post')) }}
                       </div>
                       <div class="col-2 col-lg-2 form-group">
-                        <input type="file" name="doubtimg" id="doubtimg">
+                        <input type="file" name="image" id="doubtimg">
                         <button class="btn btn-primary btn-icon btn-round w-100" type="button">
                           <i class="now-ui-icons media-1_camera-compact"></i>
                         </button>
                       </div>
                       <div class="col-2 col-lg-2 form-group">
-                        <button type="submit" class="btn btn-primary btn-icon btn-round w-100" type="button">
+                        <button type="submit" class="btn btn-primary btn-icon btn-round w-100">
                           <i class="now-ui-icons ui-1_send"></i>
                         </button>
                       </div>
@@ -71,213 +42,162 @@
               </div>
             </div>
           </div>
+          <div id="postFeed">
+          @if(postList.data.length > 0)
+          @each(post in postList.data)
           <div class="col-md-12 ml-auto col-lg-7 mr-auto">
-            <!-- Nav tabs -->
             <div class="card">
               <div class="card-body">
-                <!-- Tab panes -->
                 <div class="tab-content text-center">
                   <div class="media post-head">
-                    <div class="mr-5">
-                        <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                    </div>
                     <div class="media-body overflow-hidden">
                         <div class="d-flex align-items-center mb-1">
-                            <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                            <p class="small text-muted text-nowrap ml-4">09:25 am</p>
+                        <h6 data-letters={{post.user.username.charAt(0)}} class="text-truncate mb-0 mr-auto">{{post.user.username}}</h6>
+                        <p class="small text-muted text-nowrap ml-4">{{ formatDate(post.created_at) }}</p>
                         </div>
                     </div>
                   </div>
                   <div class="tab-pane active">
-                    <img src="front/assets/img/bg3.jpg">
+                  <p class="text-left">{{post.post_text}}</p>
+                    @if(post.post_image)
+                      <img src={{post.post_image}}>
+                    @endif
                   </div>
                   <div class="form-inline comment">
-                    <div class="col-10 col-lg-10 form-group">
-                      <textarea rows="2" class="form-control w-100" placeholder="Enter Comments..."></textarea>
-                    </div>
-                    <div class="col-2 col-lg-2 form-group">
-                      <button class="btn btn-primary btn-icon btn-round w-100" type="button">
-                        <i class="now-ui-icons ui-1_send"></i>
+                    <div class="col-6 col-lg-6 form-group">
+                      <button id="likeBtn_{{post.id}}" data-id={{post.id}} class="likebtn btn btn-{{ post.post_like ? (post.post_like).search(",") != -1 ? post.post_like.split(',').indexOf(auth.user.id) != -1 ? 'primary' : 'secondary' : (post.post_like == auth.user.id) ? 'primary' : 'secondary'  : 'secondary'}} btn-icon btn-round w-25" type="button">
+                    <i class="now-ui-icons ui-2_like"></i>
                       </button>
+                    <label for="likeBtn_{{post.id}}" class="font-weight-bold ml-2"> <span id="like_{{post.id}}">{{ post.post_like ? (post.post_like).search(",") != -1 ? post.post_like.split(',').length : 1 : 0}}</span> &nbsp; Appreciate</label>
                     </div>
-                    <div class="card card-active-listener comment-box">
-                      <div class="card-body">
-                          <div class="media">
-                              <div class="mr-5">
-                                  <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                              </div>
-                              <div class="media-body overflow-hidden">
+                    <div class="col-6 col-lg-6 form-group">
+                      <button id="commentBtn" data-id={{post.id}} class="btn btn-primary btn-icon btn-round w-25 commentbtn" type="button">
+                        <i class="now-ui-icons ui-2_chat-round"></i>
+                      </button>
+                      <label for="commentBtn" data-id={{post.id}} class="font-weight-bold ml-2">Comment</label>
+                    </div>
+                  </div>
+                    <div id="postcomment_{{post.id}}" class="form-inline comment postcomment">
+                    <div class="col-10 col-lg-10 form-group">
+                        <textarea rows="2" name="comment" class="form-control w-100" id="comment_{{post.id}}" placeholder="Enter Comments..."></textarea>
+                      </div>
+                      <div class="col-2 col-lg-2 form-group">
+                        <button class="btn btn-primary btn-icon btn-round w-100 submitPost" id="{{post.id}}" type="submit">
+                          <i class="now-ui-icons ui-1_send"></i>
+                        </button>
+                      </div>
+                    <div class="comment-container">
+                      <div class="comment-box">
+                        <div id="commentBlock_{{post.id}}" class="card-body">
+                            @if(post.comments.length > 0)
+                            @each(comment in post.comments)
+                            <div class="media">
+                                <div class="media-body overflow-hidden">
                                   <div class="d-flex align-items-center mb-1">
-                                      <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                                      <p class="small text-muted text-nowrap ml-4">09:25 am</p>
+                                    <h6 data-letters={{comment.user.username.charAt(0)}} class="text-truncate mb-0 mr-auto">{{comment.user.username}}</h6>
+                                    <p class="small text-muted text-nowrap ml-4">{{ formatDate(comment.created_at) }}</p>
                                   </div>
-                                  <div class="text-left">
-                                    <p>Matthew, let me transfer you to the marketing department.</p>
-                                  </div>
-                              </div>
-                          </div>
+                                    <div class="text-left comment-line">
+                                      <p>{{comment.comment}}</p>
+                                    </div>
+                                </div>
+                            </div>
                           <hr>
-                          <div class="media">
-                            <div class="mr-5">
-                                <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                            </div>
-                            <div class="media-body overflow-hidden">
-                                <div class="d-flex align-items-center mb-1">
-                                    <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                                    <p class="small text-muted text-nowrap ml-4">09:25 am</p>
-                                </div>
-                                <div class="text-left">
-                                  <p>Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department.</p>
-                                </div>
-                            </div>
-                        </div>
-                      <hr>
-                    </div>
-                  </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12 ml-auto col-lg-7 mr-auto">
-            <!-- Nav tabs -->
-            <div class="card">
-              <div class="card-body">
-                <!-- Tab panes -->
-                <div class="tab-content text-center">
-                  <div class="media post-head">
-                    <div class="mr-5">
-                        <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                    </div>
-                    <div class="media-body overflow-hidden">
-                        <div class="d-flex align-items-center mb-1">
-                            <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                            <p class="small text-muted text-nowrap ml-4">09:25 am</p>
-                        </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane active">
-                    <p class="text-left">Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department.</p>
-                    <img src="front/assets/img/bg3.jpg">
-                  </div>
-                  <div class="form-inline comment">
-                    <div class="col-10 col-lg-10 form-group">
-                      <textarea rows="2" class="form-control w-100" placeholder="Enter Comments..."></textarea>
-                    </div>
-                    <div class="col-2 col-lg-2 form-group">
-                      <button class="btn btn-primary btn-icon btn-round w-100" type="button">
-                        <i class="now-ui-icons ui-1_send"></i>
-                      </button>
-                    </div>
-                      <div class="card card-active-listener comment-box">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="mr-5">
-                                    <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                                </div>
-                                <div class="media-body overflow-hidden">
-                                    <div class="d-flex align-items-center mb-1">
-                                        <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                                        <p class="small text-muted text-nowrap ml-4">09:25 am</p>
-                                    </div>
-                                    <div class="text-left">
-                                      <p>Matthew, let me transfer you to the marketing department.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="media">
-                              <div class="mr-5">
-                                  <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                              </div>
-                              <div class="media-body overflow-hidden">
-                                  <div class="d-flex align-items-center mb-1">
-                                      <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                                      <p class="small text-muted text-nowrap ml-4">09:25 am</p>
-                                  </div>
-                                  <div class="text-left">
-                                    <p>Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department.</p>
-                                  </div>
-                              </div>
-                          </div>
-                        <hr>
+                          @endeach
+                          @endif
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12 ml-auto col-lg-7 mr-auto">
-            <!-- Nav tabs -->
-            <div class="card">
-              <div class="card-body">
-                <!-- Tab panes -->
-                <div class="tab-content text-center">
-                  <div class="media post-head">
-                    <div class="mr-5">
-                        <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                    </div>
-                    <div class="media-body overflow-hidden">
-                        <div class="d-flex align-items-center mb-1">
-                            <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                            <p class="small text-muted text-nowrap ml-4">09:25 am</p>
-                        </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane active">
-                    <p class="text-left">Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department.</p>
-                  </div>
-                  <div class="form-inline comment">
-                    <div class="col-10 col-lg-10 form-group">
-                      <textarea rows="2" class="form-control w-100" placeholder="Enter Comments..."></textarea>
-                    </div>
-                    <div class="col-2 col-lg-2 form-group">
-                      <button class="btn btn-primary btn-icon btn-round w-100" type="button">
-                        <i class="now-ui-icons ui-1_send"></i>
-                      </button>
-                    </div>
-                      <div class="card card-active-listener comment-box">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="mr-5">
-                                    <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                                </div>
-                                <div class="media-body overflow-hidden">
-                                    <div class="d-flex align-items-center mb-1">
-                                        <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                                        <p class="small text-muted text-nowrap ml-4">09:25 am</p>
-                                    </div>
-                                    <div class="text-left">
-                                      <p>Matthew, let me transfer you to the marketing department.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="media">
-                              <div class="mr-5">
-                                  <img class="rounded-circle img-raised" src="https://themes.2the.me/Messenger/assets/images/avatars/4.jpg" alt="Matthew Wiggins" width="50">
-                              </div>
-                              <div class="media-body overflow-hidden">
-                                  <div class="d-flex align-items-center mb-1">
-                                      <h6 class="text-truncate mb-0 mr-auto">Matthew Wiggins</h6>
-                                      <p class="small text-muted text-nowrap ml-4">09:25 am</p>
-                                  </div>
-                                  <div class="text-left">
-                                    <p>Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department. Matthew, let me transfer you to the marketing department.</p>
-                                  </div>
-                              </div>
-                          </div>
-                        <hr>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          @endeach
+          @endif
+        </div>
+          <div class="col-12 col-lg-12 text-center">
+            <button id="loadMore" data-id={{postList.page+'_'+postList.lastPage}} class="btn btn-primary btn-icon btn-round w-25" type="button">
+              Load More
+            </button>
         </div>
       </div>
     </div>
     </div>
+    <script>
+      $(document).ready(function(){
+        const _csrf = "{{ csrfToken }}"
+        $('body').on('click', '.commentbtn', function(){
+          const id = $(this).attr("data-id")
+          $('#postcomment_'+id).toggleClass("showComment")
+        })
+
+        $('body').on('click', '.submitPost', function(){
+          const id = $(this).attr("id")
+          const comment = $('#comment_'+id).val()
+          $.ajax({
+            url : '/post/comment/'+id,
+            type : 'POST',
+            data : { comment, _csrf },
+            dataType:'json',
+            success : function() {          
+                $('#comment_'+id).val('')    
+                const elm = "<div class='media'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 data-letters={{auth.user.username.charAt(0)}} class='text-truncate mb-0 mr-auto'>{{auth.user.username}}</h6><p class='small text-muted text-nowrap ml-4'>Now</p></div><div class='text-left comment-line'><p>"+comment+"</p></div></div></div><hr>"
+                $("#commentBlock_"+id).append(elm)
+            },
+            error : function(data)
+            {
+              toast.error(data.responseJSON.msg)
+            }
+            });
+        })
+
+        $('body').on('click', '.likebtn', function(){
+          const id = $(this).attr("data-id")
+          $.ajax({
+            url : '/post/like/'+id,
+            type : 'POST',
+            data : { _csrf },
+            dataType:'json',
+            success : function(data) {    
+                $('#like_'+id).text(data.msg)
+                if(data.className == 'btn-secondry'){
+                  $('#likeBtn_'+id).removeClass('btn-primary')
+                }else{
+                  $('#likeBtn_'+id).removeClass('btn-secondry')
+                }
+                $('#likeBtn_'+id).addClass(data.className)
+            },
+            error : function(data)
+            {
+              toast.error(data.responseJSON.msg)
+            }
+            });
+        })
+
+        $('#loadMore').on('click', function() {
+          const pagination = $(this).attr("data-id").split('_')
+          const nextPage = Number(pagination[0])+1
+          if(pagination[0] != pagination[1]){
+            $.ajax({
+            url : '/post/pagination/'+nextPage,
+            type : 'GET',
+            dataType:'json',
+            success : function(val) {
+              const { page, lastPage } = val.post
+              $('#postFeed').append(val.content)
+              $('#loadMore').attr('data-id', page+'_'+lastPage)
+            },
+            error : function(data)
+            {
+              toast.error(data.responseJSON.msg)
+            }
+            });
+          }else{
+            toast.success("You're All Caught Up!")
+          }
+        });
+
+      })
+    </script>
   @endsection

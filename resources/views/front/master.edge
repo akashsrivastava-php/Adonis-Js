@@ -16,6 +16,8 @@
   {{style('front/assets/css/bootstrap.min')}}
   {{style('front/assets/css/now-ui-kit')}}
   {{style('front/assets/demo/demo')}}
+  {{style('front/assets/css/style')}}
+  {{script('front/assets/js/core/jquery.min')}}
 </head>
 
 <body class="login-page sidebar-collapse">
@@ -81,6 +83,7 @@
   </nav>
   <!-- End Navbar -->
   @!section('content')
+  <div id="snackbar">Some text some message..</div>
     <footer class="footer">
       <div class=" container ">
         <nav>
@@ -114,14 +117,13 @@
     </footer>
   </div>
   <!--   Core JS Files   -->
-  {{script('front/assets/js/core/jquery.min')}}
   {{script('front/assets/js/core/popper.min')}}
   {{script('front/assets/js/core/bootstrap.min')}}
   {{script('front/assets/js/plugins/bootstrap-switch')}}
   {{script('front/assets/js/plugins/nouislider.min')}}
   {{script('front/assets/js/plugins/bootstrap-datepicker')}}
   {{script('front/assets/js/now-ui-kit')}}
-  {{script('admin/assets/libs/js/dashboard-ecommerce')}}
+  {{script('front/assets/js/utils')}}
 </body>
 
 </html>

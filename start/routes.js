@@ -20,8 +20,11 @@ Route.on('/').render('front/home')
 Route.on('/login').render('front/login')
 
 Route.group(() => {
-  Route.on('/posts').render('front/posts')
-  Route.on('/setting').render('front/setting')
+  Route.get('/posts', 'App/Controllers/Http/Front/PostController.index')
+  Route.post('/post/add', 'App/Controllers/Http/Front/PostController.insert')
+  Route.post('/post/comment/:id', 'App/Controllers/Http/Front/PostController.insertComment')
+  Route.post('/post/like/:id', 'App/Controllers/Http/Front/PostController.likePost')
+  Route.get('/post/pagination/:page', 'App/Controllers/Http/Front/PostController.postPagination')
 }).middleware('role:User')
 
 Route.post('/login-action', 'App/Controllers/Http/Front/UserController.login')
