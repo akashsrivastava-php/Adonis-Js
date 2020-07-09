@@ -17,7 +17,21 @@
 const Route = use('Route')
 
 Route.on('/').render('front/home')
-Route.on('/login').render('front/login')
+Route.get('/login', async ({response, auth, view}) => {
+  try {
+    await auth.check()
+    return response.redirect('/posts')
+  } catch (error) {
+    return view.render('front/login')
+  }
+})
+Route.on('/register').render('front/register')
+Route.on('/forgot-password').render('front/forgotpwd')
+Route.get('/logout', async ({auth, response}) => {
+  await auth.logout()
+  return response.redirect('login')
+})
+
 
 Route.group(() => {
   Route.get('/posts', 'App/Controllers/Http/Front/PostController.index')
@@ -25,9 +39,16 @@ Route.group(() => {
   Route.post('/post/comment/:id', 'App/Controllers/Http/Front/PostController.insertComment')
   Route.post('/post/like/:id', 'App/Controllers/Http/Front/PostController.likePost')
   Route.get('/post/pagination/:page', 'App/Controllers/Http/Front/PostController.postPagination')
+  Route.get('/post/getcourselist', 'App/Controllers/Http/Front/PostController.getCourseList')
+  Route.get('/settings', 'App/Controllers/Http/Front/SettingController.getAllSetting')
+  Route.post('/settings/exam', 'App/Controllers/Http/Front/SettingController.updateExam')
+  Route.post('/settings/changePass', 'App/Controllers/Http/Front/SettingController.changePass')
 }).middleware('role:User')
 
 Route.post('/login-action', 'App/Controllers/Http/Front/UserController.login')
+Route.post('/register-action', 'App/Controllers/Http/Front/UserController.register')
+Route.post('/forgot-action', 'App/Controllers/Http/Front/UserController.forgot')
+Route.get('/verify-email/:token?', 'App/Controllers/Http/Front/UserController.verifyMail')
 
 Route.group(() => {
   Route.get('/getUsers', 'App/Controllers/Ws/UserController.get').middleware('auth:jwt', 'role:Admin')

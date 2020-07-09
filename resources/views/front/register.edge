@@ -1,0 +1,63 @@
+@layout('front/master')
+@section('content')
+<style>
+  .navbar.navbar-transparent{
+    background-color: transparent !important;
+  }
+</style>
+<div class="page-header clear-filter" filter-color="blue">
+  <div class="page-header-image" style="background-image:url(front/assets/img/login.jpg)"></div>
+  <div class="content">
+    <div class="container">
+      <div class="col-md-4 ml-auto mr-auto">
+        <div class="card card-login card-plain">
+          <form class="form" method="post" action="/register-action">
+            {{ csrfField() }}
+            <div class="card-header text-center">
+              <div class="logo-container">
+                <img src="front/assets/img/now-logo.png" alt="">
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="input-group no-border input-lg">
+                <input type="text" name="username" class="form-control" placeholder="Name" autocomplete="off">
+              </div>
+              <div class="input-group no-border input-lg">
+                <input type="text" name="email" class="form-control" placeholder="Email" autocomplete="off">
+              </div>
+              <div class="input-group no-border input-lg">
+                <input type="password" name="password" placeholder="Password" class="form-control" />
+              </div>
+              <div class="input-group no-border input-lg">
+                <input type="password" name="cpassword" placeholder="Confirm Password" class="form-control" />
+              </div>
+            </div>
+            @if(flashMessage('error'))
+              <div class="alert alert-danger alert-dismissible fade show rounded-pill" role="alert">
+                {{ flashMessage('error') }}
+              </div>
+            @endif
+            @if(flashMessage('success'))
+              <div class="alert alert-success alert-dismissible fade show rounded-pill" role="alert">
+                {{ flashMessage('success') }}
+              </div>
+            @endif
+            <div class="card-footer text-center">
+              <button class="btn btn-primary btn-round btn-lg btn-block">Register</button>
+              <div class="pull-left">
+                <h6>
+                  <a href="/login" class="link">Already Have Account</a>
+                </h6>
+              </div>
+              <div class="pull-right">
+                <h6>
+                  <a href="#pablo" class="link">Need Help?</a>
+                </h6>
+              </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection

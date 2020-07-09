@@ -94,3 +94,7 @@
 }
 
 /* SNACKBAR CSS ENDS */
+
+.errorClass{
+  color: red;
+}

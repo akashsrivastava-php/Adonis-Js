@@ -11,7 +11,7 @@
     <div class="container">
       <div class="col-md-4 ml-auto mr-auto">
         <div class="card card-login card-plain">
-          <form class="form" id="loginform" method="post" action="/login-action">
+          <form class="form" id="forgotpwd" method="post" action="/forgot-action">
             {{ csrfField() }}
             <div class="card-header text-center">
               <div class="logo-container">
@@ -35,19 +35,11 @@
                     <i class="now-ui-icons users_circle-08"></i>
                   </span>
                 </div>
-                <input type="text" name="username" class="form-control" placeholder="Enter Email..." autocomplete="off">
+                <input type="text" name="email" class="form-control" placeholder="Enter Email..." autocomplete="off">
               </div>
-              <div class="input-group no-border input-lg">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="now-ui-icons ui-1_lock-circle-open"></i>
-                  </span>
-                </div>
-                <input type="password" name="password" placeholder="Enter Password..." class="form-control" />
-              </div>
+              <button class="btn btn-primary btn-round btn-lg btn-block">Submit</button>
             </div>
             <div class="card-footer text-center">
-              <button class="btn btn-primary btn-round btn-lg btn-block">Login</button>
               <div class="pull-left">
                 <h6>
                   <a href="/register" class="link">Create Account</a>
@@ -55,7 +47,7 @@
               </div>
               <div class="pull-right">
                 <h6>
-                  <a href="/forgot-password" class="link">Forgot Password</a>
+                  <a href="/login" class="link">Already have account</a>
                 </h6>
               </div>
           </form>

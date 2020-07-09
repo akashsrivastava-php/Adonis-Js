@@ -36,7 +36,16 @@
         <div class="card ">
             <div class="card-header text-center"><a href="../index.html"><img class="logo-img" src="assets/images/logo.png" alt="logo"></a><span class="splash-description">Please enter your user information.</span></div>
             <div class="card-body">
-              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('notification'), hasErrorFor('notification')) }}
+                @if(flashMessage('error'))
+                    <div class="alert alert-danger alert-dismissible fade show rounded-pill" role="alert">
+                    {{ flashMessage('error') }}
+                    </div>
+                @endif
+                @if(flashMessage('success'))
+                    <div class="alert alert-success alert-dismissible fade show rounded-pill" role="alert">
+                    {{ flashMessage('success') }}
+                    </div>
+                @endif
                 <form action='/admin/loginDash' method='post'>
                   {{ csrfField() }}
                     <div class="form-group">

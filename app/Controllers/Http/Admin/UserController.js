@@ -36,7 +36,7 @@ class UserController {
     const { name, password, email, role } = request.all()
     const rules = {
       name: 'required',
-      email: 'required|email',
+      email: 'required|email|unique:users,email',
       password: 'required',
     }
     const validation = await validate(request.all(), rules)

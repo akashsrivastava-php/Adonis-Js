@@ -7257,6 +7257,9 @@ img {
     right: 2%;
     max-width: 216px;
   }
+  .navbar-nav{
+    display: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -7293,6 +7296,9 @@ img {
   .section-images .hero-images-container-2 {
     top: 66%;
     right: 14%;
+  }
+  .navbar-nav{
+    display: none;
   }
 }
 

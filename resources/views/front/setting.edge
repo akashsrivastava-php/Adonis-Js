@@ -12,56 +12,100 @@
   }
 </style>
 <div class="wrapper">
-    <!-- End .section-navbars  -->
-    <div class="section section-tabs">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12 ml-auto col-lg-7 mr-auto">
-            <div class="accordion" id="accordionExample">
-              <div class="card">
-                <div class="card-header" id="headingOne">
-                  <h3 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      Exam Type
-                    </button>
-                  </h3>
-                </div>
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                  <div class="">
-                    <ul class="list-group">
-                      <li class="list-group-item">Cras justo odio <i class="now-ui-icons ui-1_check float-right"></i></li>
-                      <li class="list-group-item">Dapibus ac facilisis in</li>
-                      <li class="list-group-item">Morbi leo risus</li>
-                      <li class="list-group-item">Porta ac consectetur ac</li>
-                      <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-          </div>
-          <div class="accordion" id="accordionExample1">
-            <div class="card">
-              <div class="card-header" id="headingOne">
-                <h3 class="mb-0">
-                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne">
-                    Exam Type
-                  </button>
-                </h3>
-              </div>
-              <div id="collapseOne1" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample1">
-                <div class="">
-                  <ul class="list-group">
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                  </ul>
-                </div>
-              </div>
+  <div class="section section-tabs">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-8 ml-auto col-lg-8 col-12 col-sm-8 mr-auto">
+          @if(flashMessage('error'))
+            <div class="alert alert-danger alert-dismissible fade show rounded-pill" role="alert">
+            {{ flashMessage('error') }}
             </div>
-        </div>
+          @endif
+          @if(flashMessage('success'))
+            <div class="alert alert-success alert-dismissible fade show rounded-pill" role="alert">
+            {{ flashMessage('success') }}
+            </div>
+          @endif
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-8 ml-auto col-lg-8 col-12 col-sm-8 mr-auto">
+          <div class="card">
+            <div class="card-body">
+              <form action="/settings/exam" method="post">
+              {{ csrfField() }}
+                <h4 class="card-title">Exam</h4>
+                @each(course in courses)
+                  @if(course.exams.length > 0)
+                    <div class="mt-3">
+                      <span>{{course.name}}</span>
+                      <div class="row col-md-12">
+                        @each(exams in course.exams)
+                          <div class="form-check col-md-6">
+                            <label class="form-check-label ml-3">
+                              <input class="form-check-input examRadio" {{ auth.user.exams && auth.user.exams.search(exams.id) != -1 ? 'checked' : '' }} type="checkbox" name="exams" value="{{exams.id}}">
+                              <span class="form-check-sign"></span>
+                              {{exams.name}}
+                            </label>
+                          </div>
+                        @endeach
+                      </div>
+                    </div>
+                  @endif
+                @endeach
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary mt-3">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 ml-auto col-lg-8 col-12 col-sm-8 mr-auto">
+          <div class="card">
+            <div class="card-body">
+              <form id="changePass" action="/settings/changePass" method="post">
+              {{ csrfField() }}
+                <h4 class="card-title">Change Password</h4>
+                <div class="row">
+                  <div class="col-sm-12 col-md-12 col-12 col-lg-12">
+                    <div class="form-group">
+                      <input type="password" name="currentpass" placeholder="Current Password" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <input type="password" name="password" id="password" placeholder="New Password" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <input type="password" name="cpassword" placeholder="Confirm New Password" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary mt-3">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-  @endsection
+  </div>
+</div>
+  <script>
+    $(document).ready(function(){
+      const exams = "{{ auth.user.exams }}"
+      if(!exams || exams == 'null'){
+        toast.error('Please select at least one exam')
+      }
+    })
+  </script>
+@endsection
