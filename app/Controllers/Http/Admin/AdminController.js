@@ -30,7 +30,8 @@ class AdminController {
     }else{
       try{
         await auth.attempt(username, password)
-        return response.redirect('dash')
+        const redirecturl = session.pull('redirecturl')
+        return response.redirect(redirecturl ? redirecturl : 'dash')
       }
       catch(e){
         session.flash({error: 'Invalid username or password!' })

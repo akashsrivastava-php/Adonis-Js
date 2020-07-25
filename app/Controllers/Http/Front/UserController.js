@@ -24,7 +24,8 @@ class UserController {
     }else{
       try{
         await auth.attempt(username, password)
-        return response.redirect('/posts')
+        const redirecturl = session.pull('redirecturl')
+        return response.redirect(redirecturl ? redirecturl : '/posts')
       }
       catch(e){
         session.flash({ error: 'Invalid username or password!' })

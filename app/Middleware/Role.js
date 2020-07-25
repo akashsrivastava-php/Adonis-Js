@@ -9,9 +9,10 @@ class Role {
    * @param {Request} ctx.request
    * @param {Function} next
    */
-  async handle ({ auth, response }, next, properties) {
+  async handle ({ auth, response, request, session }, next, properties) {
     // call next to advance the request
     if(Object.is(auth.user, null)){
+      session.put('redirecturl', request.request.url)
       if(properties.indexOf('Admin') !== -1){
         response.redirect('/admin/login')
       }else{

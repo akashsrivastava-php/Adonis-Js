@@ -7189,7 +7189,7 @@ img {
     top: 1px;
   }
   .footer .copyright {
-    float: right;
+    text-align: center;
   }
 }
 
