@@ -1,0 +1,92 @@
+@layout('admin/master')
+@section('sidebar')
+  @include('admin/sidebar')
+@endsection
+@section('content')
+  <div class="dashboard-wrapper">
+    <div class="container-fluid  dashboard-content">
+      <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="page-header">
+                  <h2 class="pageheader-title">Add Quiz </h2>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="card">
+              <div class="card-body">
+                  <form method="post" action="/admin/insert-quiz">
+                    {{ csrfField() }}
+                    <div class="form-group">
+                        <label for="input-select">Exam</label>
+                        <select name="exam" class="form-control" id="input-select">
+                          @each(examType in courses)
+                            @if(examType.exams.length > 0)
+                                @each(exam in examType.exams)
+                                    <option value={{ exam.id }}>{{ $parent.examType.name }} - {{ exam.name }}</option>
+                                @endeach
+                            @endif
+                          @endeach
+                        </select>
+                        {{ elIf('<span class="text-danger">$self</span>', getErrorFor('exam'), hasErrorFor('exam')) }}
+                    </div>  
+                      <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                              <label for="name">Name</label>
+                              <input name="name" id="name" type="text" class="form-control" placeholder="Name">
+                              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('name'), hasErrorFor('name')) }}
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-2">
+                            <label for="name">Start Date</label>
+                            <div class="input-group date" id="startDate" data-target-input="nearest">
+                              <input type="text" name="startDate" class="form-control datetimepicker-input"  data-toggle="datetimepicker" data-target="#startDate" autocomplete="off">
+                              <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                              </div>
+                            </div>
+                            {{ elIf('<span class="text-danger">$self</span>', getErrorFor('startDate'), hasErrorFor('startDate')) }}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-2">
+                            <label for="name">End Date</label>
+                            <div class="input-group date" id="endDate" data-target-input="nearest">
+                              <input type="text" name="endDate" class="form-control datetimepicker-input"  data-toggle="datetimepicker" data-target="#endDate" autocomplete="off">
+                              <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                              </div>
+                            </div>
+                            {{ elIf('<span class="text-danger">$self</span>', getErrorFor('endDate'), hasErrorFor('endDate')) }}
+                        </div>
+                      </div>
+                      <div class="form-row mt-3">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                              <button class="btn btn-primary" type="submit">Add Quiz</button>
+                              <a class="btn btn-secondary" href="/admin/list-quiz">Cancel</a>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    $('#startDate, #endDate').datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+        minDate: moment(),
+        icons: {
+          time: "far fa-clock",
+          date: "fa fa-calendar-alt",
+          up: "fa fa-arrow-up",
+          down: "fa fa-arrow-down"
+        }
+    });
+  })
+</script>
+@endsection

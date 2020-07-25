@@ -25,7 +25,7 @@ class AdminController {
     const validation = await validate(request.all(), rules)
 
     if(validation.fails()){
-      session.withErrors(validation.messages())
+      session.flash({error: validation.messages()[0].message})
       return response.redirect('back')
     }else{
       try{
@@ -33,7 +33,7 @@ class AdminController {
         return response.redirect('dash')
       }
       catch(e){
-        session.withErrors({ notification: 'Invalid username or password!' })
+        session.flash({error: 'Invalid username or password!' })
         return response.redirect('back')
       }
     }
