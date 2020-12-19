@@ -32,7 +32,6 @@ Route.get('/logout', async ({auth, response}) => {
   return response.redirect('login')
 })
 
-
 Route.group(() => {
   Route.get('/posts', 'App/Controllers/Http/Front/PostController.index')
   Route.post('/post/add', 'App/Controllers/Http/Front/PostController.insert')
@@ -43,12 +42,14 @@ Route.group(() => {
   Route.get('/settings', 'App/Controllers/Http/Front/SettingController.getAllSetting')
   Route.post('/settings/exam', 'App/Controllers/Http/Front/SettingController.updateExam')
   Route.post('/settings/changePass', 'App/Controllers/Http/Front/SettingController.changePass')
+  Route.get('/attempt/:id', 'App/Controllers/Http/Front/QuizController.attemptQuiz')
 }).middleware('role:User')
 
 Route.post('/login-action', 'App/Controllers/Http/Front/UserController.login')
 Route.post('/register-action', 'App/Controllers/Http/Front/UserController.register')
 Route.post('/forgot-action', 'App/Controllers/Http/Front/UserController.forgot')
 Route.get('/verify-email/:token?', 'App/Controllers/Http/Front/UserController.verifyMail')
+Route.get('/quiz', 'App/Controllers/Http/Front/QuizController.getQuizList')
 
 Route.group(() => {
   Route.get('/getUsers', 'App/Controllers/Ws/UserController.get').middleware('auth:jwt', 'role:Admin')

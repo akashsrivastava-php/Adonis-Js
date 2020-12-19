@@ -42,7 +42,7 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-2">
                             <label for="name">Start Date</label>
                             <div class="input-group date" id="startDate" data-target-input="nearest">
-                              <input type="text" name="startDate" class="form-control datetimepicker-input"  data-toggle="datetimepicker" data-target="#startDate" autocomplete="off">
+                              <input type="text" name="startDate" class="form-control datetimepicker-input"  data-toggle="datetimepicker" data-target="#startDate" autocomplete="off" id="startDateInput">
                               <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
                               </div>
@@ -54,7 +54,7 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-2">
                             <label for="name">End Date</label>
                             <div class="input-group date" id="endDate" data-target-input="nearest">
-                              <input type="text" name="endDate" class="form-control datetimepicker-input"  data-toggle="datetimepicker" data-target="#endDate" autocomplete="off">
+                              <input type="text" name="endDate" class="form-control datetimepicker-input"  data-toggle="datetimepicker" data-target="#endDate" autocomplete="off" id="endDateInput">
                               <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
                               </div>
@@ -78,9 +78,8 @@
 <script>
   $(document).ready(function(){
     $('#startDate').datetimepicker({
-        format: 'DD/MM/YYYY HH:mm',
-        defaultDate: moment('{{ quiz.startDate }}', 'DD/MM/YYYY HH:mm', true),
-        minDate: moment(),
+        format: 'YYYY-MM-DD HH:mm',
+        defaultDate: moment('{{ quiz.startDate }}'),
         icons: {
           time: "far fa-clock",
           date: "fa fa-calendar-alt",
@@ -90,9 +89,8 @@
     });
 
     $('#endDate').datetimepicker({
-        format: 'DD/MM/YYYY HH:mm',
-        defaultDate: moment("{{ quiz.endDate }}", 'DD/MM/YYYY HH:mm', true),
-        minDate: moment(),
+        format: 'YYYY-MM-DD HH:mm',
+        defaultDate: '{{ quiz.endDate }}',
         icons: {
           time: "far fa-clock",
           date: "fa fa-calendar-alt",
@@ -100,6 +98,7 @@
           down: "fa fa-arrow-down"
         }
     });
+
   })
 </script>
 @endsection

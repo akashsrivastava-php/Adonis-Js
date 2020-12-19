@@ -1,0 +1,106 @@
+@layout('front/master')
+@section('content')
+<style>
+  .wrapper{
+    margin-top: 30px;
+  }
+  .navbar.navbar-transparent {
+    background-color: #2ca8ff !important
+  }
+  .accordion{
+    margin-bottom: -23px;
+  }
+  .sticky-top{
+    top: 62px;
+  }
+</style>
+<div class="wrapper">
+  <div class="section section-tabs">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-8 ml-auto col-lg-8 col-12 col-sm-8 mr-auto">
+          @if(flashMessage('error'))
+            <div class="alert alert-danger alert-dismissible fade show rounded-pill" role="alert">
+            {{ flashMessage('error') }}
+            </div>
+          @endif
+          @if(flashMessage('success'))
+            <div class="alert alert-success alert-dismissible fade show rounded-pill" role="alert">
+            {{ flashMessage('success') }}
+            </div>
+          @endif
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 ml-auto col-lg-8 col-12 col-sm-8 mr-auto sticky-top">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title text-center">{{ quizData.name }} | <i class="now-ui-icons ui-2_time-alarm"></i> <span id="tmin">00</span> : <span id="tsec">00</span></h5>
+            </div>
+          </div>
+        </div>
+
+        @each(question in questions)
+          <div class="col-md-8 ml-auto col-lg-8 col-12 col-sm-8 mr-auto">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{question.question}}</h5>
+                <hr class="my-4">
+                <div class="list-group">
+                  <button type="button" class="list-group-item list-group-item-action answerd question_{{question.id}} {{ question.correct_option == 'option_1' ? 'correct_'+question.id : '' }}" data-option="option_1" data-corr="{{question.correct_option}}" data-quest={{ question.id }}>{{question.option_1}}</button>
+                  <button type="button" class="list-group-item list-group-item-action answerd question_{{question.id}} {{ question.correct_option == 'option_2' ? 'correct_'+question.id : '' }}" data-option="option_2" data-corr="{{question.correct_option}}" data-quest={{ question.id }}>{{question.option_2}}</button>
+                  <button type="button" class="list-group-item list-group-item-action answerd question_{{question.id}} {{ question.correct_option == 'option_3' ? 'correct_'+question.id : '' }}" data-option="option_3" data-corr="{{question.correct_option}}" data-quest={{ question.id }}>{{question.option_3}}</button>
+                  <button type="button" class="list-group-item list-group-item-action answerd question_{{question.id}} {{ question.correct_option == 'option_4' ? 'correct_'+question.id : '' }}" data-option="option_4" data-corr="{{question.correct_option}}" data-quest={{ question.id }}>{{question.option_4}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        @endeach
+
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    var seconds = 60*"{{ questions.length }}";
+    function secondPassed() {
+        var minutes = Math.round((seconds - 30)/60),
+            remainingSeconds = seconds % 60;
+
+        if (remainingSeconds < 10) {
+            remainingSeconds = "0" + remainingSeconds;
+        }
+
+        document.getElementById('tmin').innerHTML = minutes;
+        document.getElementById('tsec').innerHTML = remainingSeconds;
+        if (seconds == 0) {
+            clearInterval(countdownTimer);
+            //form1 is your form name
+        } else {
+            seconds--;
+        }
+    }
+    var countdownTimer = setInterval(() => secondPassed(), 1000);
+
+    $('.answerd').on('click', function(){
+      const answerd = $(this).attr("data-option")
+      const correct = $(this).attr("data-corr")
+      const quest = $(this).attr("data-quest")
+      if( answerd != correct ){
+        $(this).addClass('list-group-item-danger')
+        $(this).removeClass('question_'+quest)
+      }
+      $('.correct_'+quest).addClass('list-group-item-success')
+      $('.correct_'+quest).removeClass('question_'+quest)
+      $('.question_'+quest).addClass('disabled')
+    })
+
+  })
+</script>
+@endsection

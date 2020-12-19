@@ -1,0 +1,56 @@
+@layout('front/master')
+@section('content')
+<style>
+  .wrapper{
+    margin-top: 30px;
+  }
+  .navbar.navbar-transparent {
+    background-color: #2ca8ff !important
+  }
+  .accordion{
+    margin-bottom: -23px;
+  }
+</style>
+<div class="wrapper">
+  <div class="section section-tabs">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-8 ml-auto col-lg-8 col-12 col-sm-8 mr-auto">
+          @if(flashMessage('error'))
+            <div class="alert alert-danger alert-dismissible fade show rounded-pill" role="alert">
+            {{ flashMessage('error') }}
+            </div>
+          @endif
+          @if(flashMessage('success'))
+            <div class="alert alert-success alert-dismissible fade show rounded-pill" role="alert">
+            {{ flashMessage('success') }}
+            </div>
+          @endif
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 ml-auto col-lg-8 col-12 col-sm-8 mr-auto">
+          <div class="card">
+            <div class="card-body">
+              {{ csrfField() }}
+              <h4 class="card-title text-center">Quiz</h4>
+              @if(quiz.length > 0)
+              <div class="list-group">
+                @each(data in quiz)
+              <a href="/attempt/{{data.id}}" class="text-decoration-none list-group-item d-flex justify-content-between align-items-center">{{ data.name }} <span class="badge badge-info badge-pill">Attempt</span></a>
+                @endeach
+              </div>
+                @else
+                  <p class="text-center">No Active Quiz</p>
+                @endif
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+@endsection
